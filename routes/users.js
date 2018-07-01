@@ -1,5 +1,7 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const mongoose = require('mongoose');
 const express = require('express');
 const { User, validate } = require('../models/user');
@@ -18,7 +20,8 @@ router.post('/', async (req, res) => {
 
   await user.save();
   
-  res.send(_.pick(user, ['_id', 'username']));
+  const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'));
+  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username']));
 });
 
 module.exports = router;
