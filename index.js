@@ -3,6 +3,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const express = require('express');
 const users = require('./routes/users');
+const auth = require('./routes/auth');
 
 const app = express();
 
@@ -12,6 +13,7 @@ mongoose.connect('mongodb://localhost/stop_smoking')
 
 app.use(express.json());
 app.use('/users', users);
+app.use('/auth', auth);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
