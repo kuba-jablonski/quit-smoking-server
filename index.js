@@ -1,37 +1,16 @@
 const Joi = require('joi');
+// Joi.objectId = require('joi-objectid')(Joi);
+// const users = require('./routes/users');
+const mongoose = require('mongoose');
 const express = require('express');
-const app = express()
+const app = express();
+
+mongoose.connect('mongodb://localhost/stop_smoking')
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch(err => console.error('Could not connect to MongoDB...'));
 
 app.use(express.json());
-
-// const users = [
-//   {
-//     id: 1,
-//     email: 'asdf',
-//     password: 'asf',
-//     profile: {
-//       username: 'Vyz',
-//       filename: 'abc',
-//       fileSrc: 'some file'
-//     },
-//     settings: {
-//       cigsPerDay: 20,
-//       cigsInPack: 20,
-//       packCost: 15,
-//       quitDate: '2018-06-30T14:46:53.988Z'
-//     }
-//   }
-// ]
-
-// app.post('/users/:id')
-
-// function validateGenre(genre) {
-//   const schema = {
-//     name: Joi.string().min(3).required()
-//   };
-
-//   return Joi.validate(genre, schema);
-// }
+// app.use('/api/users', users);
 
 const port = process.env.PORT || 3000;
-app.listen(port);
+app.listen(port, () => console.log(`Listening on port ${port}...`));
