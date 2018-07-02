@@ -4,12 +4,6 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 10
-  },
   email: {
     type: String,
     required: true,
@@ -21,6 +15,33 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 1024
+  },
+  profile: {
+    username: {
+      type: String,
+      minlength: 3,
+      maxlength: 10
+    },
+    filename: {
+      type: String
+    },
+    fileSrc: {
+      type: String
+    }
+  },
+  settings: {
+    cigsPerDay: {
+      type: Number
+    },
+    cigsInPack: {
+      type: Number
+    },
+    packCost: {
+      type: Number
+    },
+    quitDate: {
+      type: String
+    }
   }
 })
 
@@ -31,15 +52,21 @@ userSchema.methods.generateAuthToken = function() {
 
 const User = mongoose.model('User', userSchema);
 
-function validateUser(user) {
-  const schema = {
-    username: Joi.string().min(3).max(10).required(),
-    email: Joi.string().max(255).required().email(),
-    password: Joi.string().min(5).max(255).required()
-  };
-
-  return Joi.validate(user, schema);
-}
+const validate = schema => obj => Joi.validate(obj, schema);
 
 exports.User = User; 
-exports.validate = validateUser;
+exports.validateUser = validate({
+  email: Joi.string().max(255).required().email(),
+  password: Joi.string().min(5).max(255).required()
+});
+exports.validateProfile = validate({
+  username: Joi.string().min(3).max(10),
+  filename: Joi.string(),
+  fileSrc: Joi.string()  
+});
+exports.validateSettings = validate({
+  cigsPerDay: Joi.number(),
+  cigsInPack: Joi.number(),
+  packCost: Joi.number(),
+  quitDate: Joi.string()
+});
