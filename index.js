@@ -1,5 +1,7 @@
 require('express-async-errors');
 const config = require('config');
+const helmet = require('helmet');
+const compression = require('compression');
 const mongoose = require('mongoose');
 const express = require('express');
 const users = require('./routes/users');
@@ -18,6 +20,8 @@ mongoose.connect('mongodb://localhost/stop_smoking')
   .catch(err => console.error('Could not connect to MongoDB...'));
 
 app.use(express.json());
+app.use(helmet());
+app.use(compression());
 app.use('/users', users);
 app.use('/auth', auth);
 app.use(error)
