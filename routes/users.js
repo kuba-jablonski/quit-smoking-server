@@ -20,20 +20,20 @@ router.post('/', async (req, res) => {
   await user.save();
   
   const token = user.generateAuthToken();
-  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username']));
+  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'profile', 'settings']));
 });
 
-router.get('/:id', auth, async (req, res) => {
-  const user = await User.findById(req.params.id)
+router.get('/me', auth, async (req, res) => {
+  const user = await User.findById(req.user._id)
 
   res.send(_.pick(user, ['_id', 'profile', 'settings']));
 })
 
-router.put('/:id/profile', auth, async (req, res) => {
+router.put('/me/profile', auth, async (req, res) => {
   const { error } = validateProfile(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { profile } = await User.findByIdAndUpdate(req.params.id, {
+  const { profile } = await User.findByIdAndUpdate(req.user._id, {
     $set: {
       profile: req.body
     }
@@ -42,11 +42,11 @@ router.put('/:id/profile', auth, async (req, res) => {
   res.send(profile);
 })
 
-router.put('/:id/settings', auth, async (req, res) => {
+router.put('/me/settings', auth, async (req, res) => {
   const { error } = validateSettings(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { settings } = await User.findByIdAndUpdate(req.params.id, {
+  const { settings } = await User.findByIdAndUpdate(req.user._id, {
     $set: {
       settings: req.body
     }
