@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
 const express = require('express');
 const { User, validateUser, validateProfile, validateSettings } = require('../models/user');
 const auth = require('../middleware/auth')
