@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema({
   },
   settings: {
     cigsPerDay: {
-      type: Number
+      type: Number,
+      required: true
     },
     cigsInPack: {
       type: Number
@@ -54,19 +55,25 @@ const User = mongoose.model('User', userSchema);
 
 const validate = schema => obj => Joi.validate(obj, schema);
 
+const joiProfileSchema = {
+  username: Joi.string().min(3).max(10),
+  filename: Joi.string(),
+  fileSrc: Joi.string() 
+}
+
+const joiSettingsSchema = {
+  cigsPerDay: Joi.number().required(),
+  cigsInPack: Joi.number().required(),
+  packCost: Joi.number().required(),
+  quitDate: Joi.string().required()
+}
+
 exports.User = User; 
 exports.validateUser = validate({
   email: Joi.string().max(255).required().email(),
-  password: Joi.string().min(5).max(255).required()
+  password: Joi.string().min(5).max(255).required(),
+  profile: joiProfileSchema,
+  settings: Joi.object().required().keys(joiSettingsSchema)
 });
-exports.validateProfile = validate({
-  username: Joi.string().min(3).max(10),
-  filename: Joi.string(),
-  fileSrc: Joi.string()  
-});
-exports.validateSettings = validate({
-  cigsPerDay: Joi.number(),
-  cigsInPack: Joi.number(),
-  packCost: Joi.number(),
-  quitDate: Joi.string()
-});
+exports.validateProfile = validate(joiProfileSchema);
+exports.validateSettings = validate(joiSettingsSchema);
