@@ -15,7 +15,7 @@ if (!config.get('jwtPrivateKey')) {
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/stop_smoking')
+mongoose.connect(config.get('db'))
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB...'));
 
