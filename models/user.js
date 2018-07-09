@@ -63,7 +63,7 @@ const joiProfileSchema = {
 
 const joiSettingsSchema = {
   cigsPerDay: Joi.number().required(),
-  cigsInPack: Joi.number().required(),
+  cigsInPack: Joi.number().required().min(1).max(100),
   packCost: Joi.number().required(),
   quitDate: Joi.string().required()
 }
