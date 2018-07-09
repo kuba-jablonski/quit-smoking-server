@@ -59,4 +59,18 @@ describe('/users', () => {
       expect(res.headers['x-auth-token']).toBeDefined()
     })
   })
+
+  describe('GET /me', () => {
+    it('should send a user', async () => {
+      const user = new User(userData)
+      await user.save()
+      const token = user.generateAuthToken()
+
+      const res = await request
+        .get('/users/me')
+        .set('x-auth-token', token)
+
+      expect(res.body).toHaveProperty('_id')
+    })
+  })
 })
