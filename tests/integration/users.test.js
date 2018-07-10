@@ -37,7 +37,7 @@ describe('/users', () => {
         .post('/users')
         .send(userData)
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should save a user to the database', async () => {
@@ -46,7 +46,7 @@ describe('/users', () => {
         .send(userData)
 
       const user = await User.find({ email: userData.email })
-      expect(user).toBeTruthy
+      expect(user).toBeTruthy()
     })
 
     it('should send user object and token in response', async () => {
@@ -81,21 +81,21 @@ describe('/users', () => {
         .set('x-auth-token', new User().generateAuthToken())
         .send({ username: 'ab' })
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
 
       res = await request
         .put('/users/me/profile')
         .set('x-auth-token', new User().generateAuthToken())
         .send({ username: Array(12).join('a') })
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should update the profile', async () => {
       let user = new User(userData)
       await user.save()
-      const token = user.generateAuthToken()   
-      
+      const token = user.generateAuthToken()
+
       const profile = { username: 'abcd' }
 
       await request
@@ -119,7 +119,7 @@ describe('/users', () => {
         .put('/users/me/profile')
         .set('x-auth-token', token)
         .send(profile)
-        
+
       expect(res.status).toBe(200)
       expect(res.body).toMatchObject(profile)
     })
@@ -143,7 +143,7 @@ describe('/users', () => {
     it('should update the settings', async () => {
       let user = new User(userData)
       await user.save()
-      const token = user.generateAuthToken()   
+      const token = user.generateAuthToken()
 
       const updatedSettings = {
         cigsInPack: 30,
@@ -165,7 +165,7 @@ describe('/users', () => {
     it('should return updated settings', async () => {
       const user = new User(userData)
       await user.save()
-      const token = user.generateAuthToken()   
+      const token = user.generateAuthToken()
 
       const updatedSettings = {
         cigsInPack: 30,
@@ -177,7 +177,7 @@ describe('/users', () => {
       const res = await request
         .put('/users/me/settings')
         .set('x-auth-token', token)
-        .send(updatedSettings)      
+        .send(updatedSettings)
 
       expect(res.body).toMatchObject(updatedSettings)
     })
