@@ -32,13 +32,21 @@ const userSchema = new mongoose.Schema({
   settings: {
     cigsPerDay: {
       type: Number,
-      required: true
+      required: true,
+      min: 1,
+      max: 100,
     },
     cigsInPack: {
-      type: Number
+      type: Number,
+      required: true,
+      min: 1,
+      max: 100
     },
     packCost: {
-      type: Number
+      type: Number,
+      required: true,
+      min: 0,
+      max: 100000
     },
     quitDate: {
       type: String
@@ -62,9 +70,9 @@ const joiProfileSchema = {
 }
 
 const joiSettingsSchema = {
-  cigsPerDay: Joi.number().required(),
+  cigsPerDay: Joi.number().required().min(1).max(100),
   cigsInPack: Joi.number().required().min(1).max(100),
-  packCost: Joi.number().required(),
+  packCost: Joi.number().required().min(0).max(10000),
   quitDate: Joi.string().required()
 }
 
