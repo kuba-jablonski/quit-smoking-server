@@ -214,7 +214,7 @@ describe('/users', () => {
       const res = await exec()
       expect(res.status).toBe(400);
     })
-
+//
     it('should return 400 if cigsInPack is not a number', async () => {
       settings.cigsInPack = '';
       const res = await exec()
