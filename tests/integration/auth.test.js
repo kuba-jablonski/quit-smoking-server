@@ -11,7 +11,7 @@ describe('auth middleware', () => {
 
     expect(res.status).toBe(401)
   })
-//
+  //
   it('should return 400 if token is invalid', async () => {
     const res = await request
       .get('/users/me')
@@ -28,7 +28,6 @@ describe('auth middleware', () => {
     expect(res.status).toBe(200)
   })
 })
-
 
 describe('POST /', () => {
   beforeEach(async () => {

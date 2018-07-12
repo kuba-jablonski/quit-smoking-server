@@ -2,11 +2,9 @@ const app = require('../../index')
 const request = require('supertest')(app)
 const { User } = require('../../models/user')
 
-
-
 describe('/users', () => {
   describe('POST /', () => {
-    let userData;
+    let userData
 
     beforeEach(() => {
       userData = {
@@ -81,7 +79,7 @@ describe('/users', () => {
     })
 
     afterEach(async () => {
-      await User.deleteMany({});
+      await User.deleteMany({})
     })
 
     it('should send a user', async () => {
@@ -134,7 +132,7 @@ describe('/users', () => {
         .send({ username: new Array(12).join('a') })
 
       expect(res.status).toBe(400)
-    })    
+    })
 
     it('should update the profile', async () => {
       const profile = { username: 'abcd' }
@@ -144,10 +142,10 @@ describe('/users', () => {
         .set('x-auth-token', token)
         .send(profile)
 
-      user = await User.findOne({ profile })
+      const user = await User.findOne({ profile })
 
       expect(user).toBeTruthy()
-      expect(user.profile).toHaveProperty('username', 'abcd');
+      expect(user.profile).toHaveProperty('username', 'abcd')
     })
 
     it('should return updated profile', async () => {
@@ -198,39 +196,39 @@ describe('/users', () => {
     }
 
     it('should return 400 if cigsPerDay is less than 1', async () => {
-      settings.cigsPerDay = 0;
+      settings.cigsPerDay = 0
       const res = await exec()
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should return 400 if cigsPerDay is more than 100', async () => {
-      settings.cigsPerDay = 101;
+      settings.cigsPerDay = 101
       const res = await exec()
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should return 400 if cigsPerDay is not a number', async () => {
-      settings.cigsPerDay = '';
+      settings.cigsPerDay = ''
       const res = await exec()
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
-//
+    //
     it('should return 400 if cigsInPack is not a number', async () => {
-      settings.cigsInPack = '';
+      settings.cigsInPack = ''
       const res = await exec()
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should return 400 if cigsInPack is less than 1', async () => {
-      settings.cigsInPack = 0;
+      settings.cigsInPack = 0
       const res = await exec()
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should return 400 if cigsInPack is more than 100', async () => {
-      settings.cigsInPack = 101;
+      settings.cigsInPack = 101
       const res = await exec()
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(400)
     })
 
     it('should update the settings', async () => {
@@ -240,8 +238,8 @@ describe('/users', () => {
         packCost: 20,
         quitDate: 'abcefg'
       }
-      await exec();
-      user = await User.findOne({ email: 'user@test.com' })
+      await exec()
+      const user = await User.findOne({ email: 'user@test.com' })
       expect(user.settings).toMatchObject(settings)
     })
 
@@ -252,7 +250,7 @@ describe('/users', () => {
         packCost: 20,
         quitDate: 'abcefg'
       }
-      const res = await exec();
+      const res = await exec()
       expect(res.body).toMatchObject(settings)
     })
   })
