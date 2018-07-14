@@ -64,9 +64,9 @@ const User = mongoose.model('User', userSchema)
 const validate = schema => obj => Joi.validate(obj, schema)
 
 const joiProfileSchema = {
-  username: Joi.string().min(3).max(10),
-  filename: Joi.string(),
-  fileSrc: Joi.string()
+  username: Joi.string().min(3).max(10).allow(null),
+  filename: Joi.string().allow(null),
+  fileSrc: Joi.string().allow(null)
 }
 
 const joiSettingsSchema = {
