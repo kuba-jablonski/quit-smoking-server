@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
     },
     fileSrc: {
       type: String
+    },
+    rotation: {
+      type: Number
     }
   },
   settings: {
@@ -66,7 +69,8 @@ const validate = schema => obj => Joi.validate(obj, schema)
 const joiProfileSchema = {
   username: Joi.string().min(3).max(10).allow(null),
   filename: Joi.string().allow(null),
-  fileSrc: Joi.string().allow(null)
+  fileSrc: Joi.string().allow(null),
+  rotation: Joi.number()
 }
 
 const joiSettingsSchema = {
